@@ -1,0 +1,12 @@
+prm/*
+lbl/*
+train/wav/*
+train/lbl/*
+train/prm/*
+train/lst/*
+train/ndx/*
+test/wav/*
+test/lbl/*
+test/prm/*
+test/lst/*
+test/ndx/*
