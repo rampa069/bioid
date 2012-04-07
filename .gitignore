@@ -12,3 +12,5 @@ test/lst/*.lst
 test/res/*.res
 test/ndx/*.ndx
 gmm/*.gmm
+*~
+
