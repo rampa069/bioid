@@ -7,48 +7,10 @@ export EXECDIR=/usr/local/bin
 export WAVDIR=$TESTDIR/wav
 export LSTDIR=$TESTDIR/lst
 export LBLDIR=$TESTDIR/lbl
+export SCRDIR=$BIODIR/scripts/
 
 
 
-
-function f_floats()
-{
-	a=$1
-	b=$2
-	if [ "${a}" != "" -a "${b}" != "" ]
-	then
-		len_a=${#a}
-		len_b=${#b}
-		
-		if [ $len_a -gt $len_b ]
-		then
-			b=${b}`f_add_zeros $(( $len_a - $len_b ))`
-		else
-					a=${a}`f_add_zeros $(( $len_b - $len_a ))`
-		fi
-		
-		a=`echo $a | sed 's/\.//'`
-		b=`echo $b | sed 's/\.//'`
-		
-		if [ $a -gt $b ]
-		then
-			echo 1
-		else
-			echo 0
-		fi
-	fi
-}
-
-function f_add_zeros()
-{
-	i=0
-	while [ $i -lt $1 ]
-		do
-			out=${out}0
-			((i++))
-		done
-		echo $out
-}
 
 pushd $TESTDIR
 
@@ -97,13 +59,8 @@ rm $TESTDIR/ndx/$1/*
 rm $TESTDIR/lbl/$1/*
 
 
-        resultado=`head -1  $TESTDIR/res/$1.res |cut -d" " -f 5`
 
-if [ `f_floats $resultado 0.5` == 0 ]
-        then
-        	echo "INCORRECTO $resultado" > $TESTDIR/res1/$1.res
-        else
-        	echo "CORRECTO $resultado" > $TESTDIR/res1/$1.res
-        fi
+ $SCRDIR/toarray.php $1 > $TESTDIR/res1/$1.res
+
 
 popd
