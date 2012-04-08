@@ -6,6 +6,7 @@ export TESTDIR=$BIODIR/test
 export EXECDIR=/usr/local/bin
 export WAVDIR=$TESTDIR/wav
 export LSTDIR=$TESTDIR/lst
+export LBLDIR=$TESTDIR/lbl
 
 
 
@@ -68,14 +69,16 @@ echo -n "" > $TESTDIR/ndx/$1/test.ndx
 
 for a in `cat $LSTDIR/dir_$1.lst` ; 
 do  
-        c=`echo $a |cut -d"." -f 1`
+        c=`basename $a .wav`
   
         sfbcep -F PCM16 -f8000 -p 19 -e -D -A $WAVDIR/$1/$c.wav $TESTDIR/prm/$1/$c.prm
+#        vadalize -v -c /opt/bioid/PHN_HU_SPDAT_LCRC_N1500 -i $WAVDIR/$1/$c.wav -o $LBLDIR/$1/$c.lbl
+                
         echo $c >> $TESTDIR/lst/$1/test.lst
         echo -n "$c " >> $TESTDIR/ndx/$1/test.ndx
 done
 
-echo -n "$1_gmm " >> $TESTDIR/ndx/$1/test.ndx
+echo  "$1_gmm 3182131_gmm 3182103_gmm 3182221_gmm 3182195_gmm male_gmm female_gmm" >> $TESTDIR/ndx/$1/test.ndx
 
 #
 $EXECDIR/NormFeat --config $CFGDIR/NormFeat_energy.cfg --inputFeatureFilename ./lst/$1/test.lst --featureFilesPath $TESTDIR/prm/$1/ --labelFilesPath  $TESTDIR/lbl/$1/
@@ -94,13 +97,13 @@ rm $TESTDIR/ndx/$1/*
 rm $TESTDIR/lbl/$1/*
 
 
-        resultado=`cut -d" " -f 5 $TESTDIR/res/$1.res`
+        resultado=`head -1  $TESTDIR/res/$1.res |cut -d" " -f 5`
 
 if [ `f_floats $resultado 0.5` == 0 ]
         then
-        	echo "INCORRECTO $resultado" > $TESTDIR/res/$1.res
+        	echo "INCORRECTO $resultado" > $TESTDIR/res1/$1.res
         else
-        	echo "CORRECTO $resultado" > $TESTDIR/res/$1.res
+        	echo "CORRECTO $resultado" > $TESTDIR/res1/$1.res
         fi
 
 popd

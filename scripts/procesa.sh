@@ -19,8 +19,9 @@ rm -rf $LBLDIR/*
 
 for a in `cat $LSTDIR/all.lst` ;
 do
-     c=`echo $a |cut -d"-" -f 1`
+     c=`basename $a .wav`
      sfbcep -F WAVE -f8000 -p 19 -e -D -A $BIODIR/corpus/$a.wav $PRMDIR/$a.prm
+#     vadalize -v -c /opt/bioid/PHN_HU_SPDAT_LCRC_N1500 -i $BIODIR/corpus/$a.wav -o $LBLDIR/$c.lbl
 done
 #
 #                

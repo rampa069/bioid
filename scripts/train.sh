@@ -6,9 +6,10 @@ export TRAINDIR=$BIODIR/train
 export EXECDIR=/usr/local/bin
 export WAVDIR=$TRAINDIR/wav
 export LSTDIR=$TRAINDIR/lst
+export LBLDIR=$TRAINDIR/lbl
 
 pushd $WAVDIR/$1
-ls *.wav > $LSTDIR/dir_$1.lst
+ls *digitos*.wav > $LSTDIR/dir_$1.lst
 cd /opt/bioid/train/
 
 mkdir -p $TRAINDIR/prm/$1
@@ -25,6 +26,8 @@ do
         c=`basename $a .wav`
   
         sfbcep -F WAVE -p 19 -e -D -A /opt/bioid/train/wav/$1/$c.wav /opt/bioid/train/prm/$1/$c.prm
+#        vadalize -v -c /opt/bioid/PHN_HU_SPDAT_LCRC_N1500 -i /opt/bioid/train/wav/$1/$c.wav -o $LBLDIR/$1/$c.lbl
+             
         echo $c >> $TRAINDIR/lst/$1/train.lst
         echo -n "$c " >> $TRAINDIR/ndx/$1/train.ndx
 done
