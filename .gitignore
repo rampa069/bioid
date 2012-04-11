@@ -1,6 +1,6 @@
 prm/*.prm
 lbl/*.lbl
-train/wav/*
+train/wav/*.wav
 train/lbl/*.lbl
 train/prm/*.prm
 train/lst/*.lst
