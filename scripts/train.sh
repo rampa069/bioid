@@ -9,7 +9,7 @@ export LSTDIR=$TRAINDIR/lst
 export LBLDIR=$TRAINDIR/lbl
 
 pushd $WAVDIR/$1
-ls *digitos*.wav > $LSTDIR/dir_$1.lst
+ls *digit*.wav > $LSTDIR/dir_$1.lst
 cd /opt/bioid/train/
 
 mkdir -p $TRAINDIR/prm/$1

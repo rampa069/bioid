@@ -10,6 +10,7 @@ test/lbl/*.lbl
 test/prm/*.prm
 test/lst/*.lst
 test/res/*.res
+test/res1/*.res
 test/ndx/*.ndx
 gmm/*.gmm
 *~
