@@ -32,9 +32,9 @@ array_multisort($results,SORT_NUMERIC,SORT_DESC,
 //var_dump($username);
 
 if ($username[0] == $arg+"_gmm") {
- echo "OK ". number_format($results[0],2)."\n";
+ echo "OK CORRECTO ". number_format($results[0],2)."\n";
 } else {
- echo "NOK ".number_format($resultado,2)."\n";
+ echo "NOK INCORRECTO ".number_format($resultado,2)."\n";
 }
 
 ?>

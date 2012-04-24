@@ -20,7 +20,8 @@ for a in `find $TRAINDIR -name *-digitos*.wav` ;
 do  
         c=`basename $a .wav`
           
-        sfbcep -F WAVE -p 19 -e -D -A $a prm/$c.prm
+#        sfbcep -F WAVE -p 19 -e -D -A $a prm/$c.prm
+        slpcep -F WAVE -n 19 -p 19 -e -D -A $a prm/$c.prm
                     
         echo $c >> $LSTDIR/users_train.lst                         
 done
