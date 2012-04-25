@@ -2,7 +2,7 @@
 <?
 $arg=$argv[1];
 $fichero="/opt/bioid/test/res/".$arg.".res";
-$ficherog="/opt/bioid/test/res/".$arg.".res";
+$ficherog="/opt/bioid/test/res/".$arg."-g.res";
 
 $array=array();
 $arrayg=array();
