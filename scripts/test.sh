@@ -12,7 +12,7 @@ export PRMDIR=$TESTDIR/prm
 
 
 
-pushd $TESTDIR
+pushd $TESTDIR > /dev/null
 
 cd $WAVDIR/$1
 ls *.wav > $LSTDIR/dir_$1.lst
@@ -41,18 +41,22 @@ do
                 
         echo $c >> $TESTDIR/lst/$1/test.lst
         echo -n "$c " >> $TESTDIR/ndx/$1/test.ndx
+        echo -n "$c " >> $TESTDIR/ndx/$1/test-g.ndx        
 done
 
-echo  "$1_gmm 3182131_gmm 3182103_gmm 3182221_gmm 2195_gmm 3999_gmm" >> $TESTDIR/ndx/$1/test.ndx
+echo  "$1_gmm 3182131_gmm 3182103_gmm 3182221_gmm 3182007_gmm 2195_gmm 3999_gmm" >> $TESTDIR/ndx/$1/test.ndx
+echo  "male_gmm female_gmm" >> $TESTDIR/ndx/$1/test-g.ndx
 
 #
-$EXECDIR/NormFeat --config $CFGDIR/NormFeat_energy.cfg --inputFeatureFilename ./lst/$1/test.lst --featureFilesPath $TESTDIR/prm/$1/ --labelFilesPath  $TESTDIR/lbl/$1/
+$EXECDIR/NormFeat --config $CFGDIR/NormFeat_energy.cfg --inputFeatureFilename ./lst/$1/test.lst --featureFilesPath $TESTDIR/prm/$1/ --labelFilesPath  $TESTDIR/lbl/$1/ > /dev/null
 #
-$EXECDIR/EnergyDetector --config $CFGDIR/EnergyDetector.cfg --inputFeatureFilename ./lst/$1/test.lst --featureFilesPath $TESTDIR/prm/$1/  --labelFilesPath  $TESTDIR/lbl/$1/
+$EXECDIR/EnergyDetector --config $CFGDIR/EnergyDetector.cfg --inputFeatureFilename ./lst/$1/test.lst --featureFilesPath $TESTDIR/prm/$1/  --labelFilesPath  $TESTDIR/lbl/$1/ > /dev/null
 #
-$EXECDIR/NormFeat --config $CFGDIR/NormFeat.cfg --inputFeatureFilename $TESTDIR/lst/$1/test.lst --featureFilesPath $TESTDIR/prm/$1/ --labelFilesPath  $TESTDIR/lbl/$1/
+$EXECDIR/NormFeat --config $CFGDIR/NormFeat.cfg --inputFeatureFilename $TESTDIR/lst/$1/test.lst --featureFilesPath $TESTDIR/prm/$1/ --labelFilesPath  $TESTDIR/lbl/$1/ > /dev/null
 #
 $EXECDIR/ComputeTest --config $CFGDIR/ComputeTest.cfg  --ndxFilename $TESTDIR/ndx/$1/test.ndx --worldModelFilename world --outputFilename $TESTDIR/res/$1.res --mixtureFilesPath   $BIODIR/gmm/  --featureFilesPath $TESTDIR/prm/$1/ --labelFilesPath  $TESTDIR/lbl/$1/
+#
+$EXECDIR/ComputeTest --config $CFGDIR/target_seg_female.cfg  --ndxFilename $TESTDIR/ndx/$1/test-g.ndx --worldModelFilename world --outputFilename $TESTDIR/res/$1-g.res --mixtureFilesPath   $BIODIR/gmm/  --featureFilesPath $TESTDIR/prm/$1/ --labelFilesPath  $TESTDIR/lbl/$1/
 
 
 rm $TESTDIR/wav/$1/*
@@ -66,4 +70,4 @@ rm $TESTDIR/lbl/$1/*
  $SCRDIR/toarray.php $1 > $TESTDIR/res1/$1.res
  $SCRDIR/result.php $1 
 
-popd
+popd > /dev/null
