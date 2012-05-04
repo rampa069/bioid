@@ -9,9 +9,23 @@ export LSTDIR=$TESTDIR/lst
 export LBLDIR=$TESTDIR/lbl
 export SCRDIR=$BIODIR/scripts/
 export PRMDIR=$TESTDIR/prm
+export GMMDIR=$BIODIR/gmm
 
 
 
+if [ ! -e $GMMDIR/$1_gmm.gmm ]
+then
+     $SCRDIR/nobio.php
+     exit 
+fi
+
+if [ ! -e $TESTDIR/wav/$1/*.wav ]
+then
+     $SCRDIR/nowav.php
+     exit
+fi
+
+  
 pushd $TESTDIR > /dev/null
 
 cd $WAVDIR/$1
@@ -29,6 +43,8 @@ echo >$TESTDIR/lst/$1/test.lst
 echo -n "" > $TESTDIR/ndx/$1/test.ndx
 
 
+          
+
 for a in `cat $LSTDIR/dir_$1.lst` ; 
 do  
         c=`basename $a .wav`
@@ -44,7 +60,7 @@ do
         echo -n "$c " >> $TESTDIR/ndx/$1/test-g.ndx        
 done
 
-echo  "$1_gmm 3182131_gmm 3182103_gmm 3182221_gmm 3182007_gmm 2195_gmm 3999_gmm" >> $TESTDIR/ndx/$1/test.ndx
+echo  "$1_gmm 3182106_gmm 3182103_gmm 3182221_gmm 3182007_gmm 976734193_gmm 3999_gmm" >> $TESTDIR/ndx/$1/test.ndx
 echo  "male_gmm female_gmm" >> $TESTDIR/ndx/$1/test-g.ndx
 
 #

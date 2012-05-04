@@ -7,6 +7,7 @@ export EXECDIR=/usr/local/bin
 export WAVDIR=$TRAINDIR/wav
 export LSTDIR=$TRAINDIR/lst
 export LBLDIR=$TRAINDIR/lbl
+export PRMDIR=$TRAINDIR/prm
 
 pushd $WAVDIR/$1
 ls *digit*.wav > $LSTDIR/dir_$1.lst
@@ -25,7 +26,9 @@ for a in `cat /opt/bioid/train/lst/dir_$1.lst` ;
 do  
         c=`basename $a .wav`
   
-        sfbcep -F WAVE -p 19 -e -D -A /opt/bioid/train/wav/$1/$c.wav /opt/bioid/train/prm/$1/$c.prm
+#        sfbcep -F WAVE -p 19 -e -D -A /opt/bioid/train/wav/$1/$c.wav /opt/bioid/train/prm/$1/$c.prm
+        slpcep -F WAVE -n 19 -p 19 -e -D -A $WAVDIR/$1/$c.wav  $PRMDIR/$1/$c.prm
+             
 #        vadalize -v -c /opt/bioid/PHN_HU_SPDAT_LCRC_N1500 -i /opt/bioid/train/wav/$1/$c.wav -o $LBLDIR/$1/$c.lbl
              
         echo $c >> $TRAINDIR/lst/$1/train.lst
