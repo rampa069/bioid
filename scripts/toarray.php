@@ -31,6 +31,7 @@ array_multisort($results,SORT_NUMERIC,SORT_DESC,
 //var_dump($results);
 //var_dump($username);
 
+
 if ($username[0] == $arg+"_gmm") {
  echo "OK CORRECTO ". number_format($results[0],2)."\n";
 } else {

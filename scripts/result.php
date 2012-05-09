@@ -106,7 +106,7 @@ if ($usernameg[0] == "male_gmm") {
 }
  
 $salida = array('result'     => $acceso,
-                'recognized' => $array[1]['recognized'],
+                'recognized' => $array[0]['recognized'],
                 'value'      => number_format($resultado,2),
                 'gender'     => $gender,
                 'maxValue'   => number_format(max_float($results),2),
