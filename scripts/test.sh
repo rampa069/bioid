@@ -16,6 +16,7 @@ export GMMDIR=$BIODIR/gmm
 if [ ! -e $GMMDIR/$1_gmm.gmm ]
 then
      $SCRDIR/nobio.php
+     rm $TESTDIR/wav/$1/*
      exit 
 fi
 
