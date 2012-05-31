@@ -19,9 +19,11 @@ echo "" > $LSTDIR/users_train.lst
 for a in `find $TRAINDIR -name *-digitos*.wav` ; 
 do  
         c=`basename $a .wav`
+        sox -c 1 $a -n trim 0 2 noiseprof /tmp/$c-speech.noise-profile
+        sox $a  /tmp/nr-$c.wav  noisered /tmp/$c-speech.noise-profile  0.5
           
 #        sfbcep -F WAVE -p 19 -e -D -A $a prm/$c.prm
-        slpcep -F WAVE -n 19 -p 19 -e -D -A $a prm/$c.prm
+        slpcep -F WAVE -n 19 -p 19 -e -D -A /tmp/nr-$c.wav prm/$c.prm
                     
         echo $c >> $LSTDIR/users_train.lst                         
 done
