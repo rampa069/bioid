@@ -30,7 +30,16 @@ fi
 pushd $TESTDIR > /dev/null
 
 cd $WAVDIR/$1
-ls *.wav > $LSTDIR/dir_$1.lst
+for wavfile in `ls *.wav`;
+do
+
+ sox -c 1 *.wav -n trim 0 2 noiseprof speech.noise-profile
+ sox $wavfile  nr-$wavfile noisered speech.noise-profile  0.5
+ echo nr-*.wav >> $LSTDIR/dir_$1.lst
+
+done
+
+ls nr-*.wav > $LSTDIR/dir_$1.lst
 cd $TESTDIR
 
 mkdir -p $TESTDIR/prm/$1
@@ -61,7 +70,7 @@ do
         echo -n "$c " >> $TESTDIR/ndx/$1/test-g.ndx        
 done
 
-echo  "$1_gmm 3182106_gmm 3182221_gmm 3182007_gmm 976734193_gmm 618472958_gmm 3999_gmm" >> $TESTDIR/ndx/$1/test.ndx
+echo  "$1_gmm 3182106_gmm 3182221_gmm 3182007_gmm 976734193_gmm 618472958_gmm 607232369_gmm 3999_gmm" >> $TESTDIR/ndx/$1/test.ndx
 echo  "male_gmm female_gmm" >> $TESTDIR/ndx/$1/test-g.ndx
 
 #

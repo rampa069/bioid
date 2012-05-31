@@ -91,11 +91,18 @@ array_multisort($resultsg,SORT_NUMERIC,SORT_DESC,
                 $usernameg);
                 
 
-if ($username[0] == $arg+"_gmm") {
+//if ($username[0] == $arg+"_gmm") {
+//       $acceso='OK'; 
+//} else {
+//       $acceso='NOK';
+//}              
+
+if (number_format($resultado,2) == number_format(max_float($results),2)) {
        $acceso='OK'; 
 } else {
        $acceso='NOK';
 }              
+
 
 
 if ($usernameg[0] == "male_gmm") {

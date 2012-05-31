@@ -20,9 +20,12 @@ rm -rf $LBLDIR/*
 for a in `cat $LSTDIR/all.lst` ;
 do
      c=`basename $a .wav`
+     sox -c 1 $BIODIR/corpus/$a.wav -n trim 0 2 noiseprof /tmp/$c-speech.noise-profile
+     sox $BIODIR/corpus/$a.wav  /tmp/nr-$c.wav  noisered /tmp/$c-speech.noise-profile  0.5
+                
 #     sfbcep -F WAVE -f8000 -p 19 -e -D -A $BIODIR/corpus/$a.wav $PRMDIR/$a.prm
-     slpcep -F WAVE -n 19 -p 19 -e -D -A $BIODIR/corpus/$a.wav  $PRMDIR/$a.prm
-             
+#     slpcep -F WAVE -n 19 -p 19 -e -D -A $BIODIR/corpus/$a.wav  $PRMDIR/$a.prm
+     slpcep -F WAVE -n 19 -p 19 -e -D -A /tmp/nr-$c.wav  $PRMDIR/$a.prm             
 #     vadalize -v -c /opt/bioid/PHN_HU_SPDAT_LCRC_N1500 -i $BIODIR/corpus/$a.wav -o $LBLDIR/$c.lbl
 done
 #

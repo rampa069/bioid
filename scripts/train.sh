@@ -25,9 +25,12 @@ echo -n "$1_gmm " > $TRAINDIR/ndx/$1/train.ndx
 for a in `cat /opt/bioid/train/lst/dir_$1.lst` ; 
 do  
         c=`basename $a .wav`
+        sox -c 1 $WAVDIR/$1/$a -n trim 0 2 noiseprof /tmp/$c-speech.noise-profile
+        sox $WAVDIR/$1/$a  /tmp/nr-$c.wav  noisered /tmp/$c-speech.noise-profile  0.5
   
 #        sfbcep -F WAVE -p 19 -e -D -A /opt/bioid/train/wav/$1/$c.wav /opt/bioid/train/prm/$1/$c.prm
-        slpcep -F WAVE -n 19 -p 19 -e -D -A $WAVDIR/$1/$c.wav  $PRMDIR/$1/$c.prm
+#        slpcep -F WAVE -n 19 -p 19 -e -D -A $WAVDIR/$1/$c.wav  $PRMDIR/$1/$c.prm
+         slpcep -F WAVE -n 19 -p 19 -e -D -A /tmp/nr-$c.wav  $PRMDIR/$1/$c.prm
              
 #        vadalize -v -c /opt/bioid/PHN_HU_SPDAT_LCRC_N1500 -i /opt/bioid/train/wav/$1/$c.wav -o $LBLDIR/$1/$c.lbl
              
