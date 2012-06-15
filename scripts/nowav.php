@@ -1,5 +1,5 @@
 #!/usr/bin/php
-<?
+<?php
  
 $salida = array('result'     => 0,
                 'recognized' => 0,
