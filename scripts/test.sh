@@ -73,7 +73,7 @@ do
         echo -n "$c " >> $TESTDIR/ndx/$1/test-g.ndx        
 done
 
-echo  "$1_gmm 17865462697_gmm 16025773384_gmm 3182106_gmm 3182221_gmm 3182007_gmm 976734193_gmm 618472958_gmm 607232369_gmm 3999_gmm" >> $TESTDIR/ndx/$1/test.ndx
+echo  "$1_gmm 17865462697_gmm 16025773384_gmm 13058030755_gmm 13057253619_gmm 3182106_gmm 3182221_gmm 3182007_gmm 976734193_gmm 618472958_gmm 607232369_gmm 3999_gmm" >> $TESTDIR/ndx/$1/test.ndx
 echo  "male_gmm female_gmm" >> $TESTDIR/ndx/$1/test-g.ndx
 
 #

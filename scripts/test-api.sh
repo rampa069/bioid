@@ -73,7 +73,15 @@ do
         echo -n "$c " >> $TESTDIR/ndx/$1/test-g.ndx        
 done
 
-echo  "$1_gmm apiana_gmm apidani_gmm apiirene_gmm apijoaquin_gmm api609126310_gmm 976734193_gmm 618472958_gmm 607232369_gmm 3999_gmm" >> $TESTDIR/ndx/$1/test.ndx
+echo -n "$1_gmm ">> $TESTDIR/ndx/$1/test.ndx
+
+for apiuser in `ls /opt/bioid/gmm/api*`;
+
+do 
+  echo -n "`basename $apiuser .gmm` " >>  $TESTDIR/ndx/$1/test.ndx
+   
+done 
+
 echo  "male_gmm female_gmm" >> $TESTDIR/ndx/$1/test-g.ndx
 
 #
