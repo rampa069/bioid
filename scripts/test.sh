@@ -1,15 +1,17 @@
 #!/bin/bash
 
+LANG=$2
+
 export BIODIR='/opt/bioid'
 export CFGDIR=$BIODIR/cfg
 export TESTDIR=$BIODIR/test
-export EXECDIR=/usr/local/bin
+export EXECDIR=/opt/bin
 export WAVDIR=$TESTDIR/wav
 export LSTDIR=$TESTDIR/lst
 export LBLDIR=$TESTDIR/lbl
 export SCRDIR=$BIODIR/scripts/
 export PRMDIR=$TESTDIR/prm
-export GMMDIR=$BIODIR/gmm
+export GMMDIR=$BIODIR/gmm/$LANG/
 
 
 
@@ -34,7 +36,7 @@ for wavfile in `ls *.wav`;
 do
 
  sox -c 1 *.wav -n trim 0 2 noiseprof speech.noise-profile
- sox $wavfile  nr-$wavfile noisered speech.noise-profile  0.6
+ sox -c 1 $wavfile  nr-$wavfile noisered speech.noise-profile  0.6
  echo nr-*.wav >> $LSTDIR/dir_$1.lst
 
 done
@@ -63,7 +65,7 @@ do
         c=`basename $a .wav`
   
 #        sfbcep -F PCM16 -f8000 -p 19 -e -D -A $WAVDIR/$1/$c.wav $TESTDIR/prm/$1/$c.prm
-        slpcep -F WAVE -n 19 -p 19 -e -D -A $WAVDIR/$1/$c.wav  $PRMDIR/$1/$c.prm
+        $EXECDIR/slpcep -F WAVE -n 19 -p 19 -e -D -A $WAVDIR/$1/$c.wav  $PRMDIR/$1/$c.prm
      
 
 #        vadalize -v -c /opt/bioid/PHN_HU_SPDAT_LCRC_N1500 -i $WAVDIR/$1/$c.wav -o $LBLDIR/$1/$c.lbl
@@ -73,19 +75,49 @@ do
         echo -n "$c " >> $TESTDIR/ndx/$1/test-g.ndx        
 done
 
-echo  "$1_gmm 17865462697_gmm 16025773384_gmm 13058030755_gmm 13057253619_gmm 3182106_gmm 3182221_gmm 3182007_gmm 976734193_gmm 618472958_gmm 607232369_gmm 3999_gmm" >> $TESTDIR/ndx/$1/test.ndx
+echo  -n "$1_gmm " >> $TESTDIR/ndx/$1/test.ndx
+
+for user in `ls $BIODIR/gmm/$LANG/[0-9]*`;
+
+	do 
+		echo -n "`basename $user .gmm` " >>  $TESTDIR/ndx/$1/test.ndx
+     	done 
+     
+
+
 echo  "male_gmm female_gmm" >> $TESTDIR/ndx/$1/test-g.ndx
 
 #
-$EXECDIR/NormFeat --config $CFGDIR/NormFeat_energy.cfg --inputFeatureFilename ./lst/$1/test.lst --featureFilesPath $TESTDIR/prm/$1/ --labelFilesPath  $TESTDIR/lbl/$1/ > /dev/null
+$EXECDIR/NormFeat --config $CFGDIR/NormFeat_energy.cfg \
+		  --inputFeatureFilename ./lst/$1/test.lst \
+		  --featureFilesPath $TESTDIR/prm/$1/ \
+		  --labelFilesPath  $TESTDIR/lbl/$1/ > /dev/null
 #
-$EXECDIR/EnergyDetector --config $CFGDIR/EnergyDetector.cfg --inputFeatureFilename ./lst/$1/test.lst --featureFilesPath $TESTDIR/prm/$1/  --labelFilesPath  $TESTDIR/lbl/$1/ > /dev/null
+$EXECDIR/EnergyDetector --config $CFGDIR/EnergyDetector.cfg \
+			--inputFeatureFilename ./lst/$1/test.lst \
+			--featureFilesPath $TESTDIR/prm/$1/  \
+			--labelFilesPath  $TESTDIR/lbl/$1/ > /dev/null
 #
-$EXECDIR/NormFeat --config $CFGDIR/NormFeat.cfg --inputFeatureFilename $TESTDIR/lst/$1/test.lst --featureFilesPath $TESTDIR/prm/$1/ --labelFilesPath  $TESTDIR/lbl/$1/ > /dev/null
+$EXECDIR/NormFeat --config $CFGDIR/NormFeat.cfg \
+		  --inputFeatureFilename $TESTDIR/lst/$1/test.lst \
+		  --featureFilesPath $TESTDIR/prm/$1/ \
+		  --labelFilesPath  $TESTDIR/lbl/$1/ > /dev/null
 #
-$EXECDIR/ComputeTest --config $CFGDIR/ComputeTest.cfg  --ndxFilename $TESTDIR/ndx/$1/test.ndx --worldModelFilename world --outputFilename $TESTDIR/res/$1.res --mixtureFilesPath   $BIODIR/gmm/  --featureFilesPath $TESTDIR/prm/$1/ --labelFilesPath  $TESTDIR/lbl/$1/
+$EXECDIR/ComputeTest --config $CFGDIR/ComputeTest.cfg  \
+		     --ndxFilename $TESTDIR/ndx/$1/test.ndx \
+		     --worldModelFilename world \
+		     --outputFilename $TESTDIR/res/$1.res \
+		     --mixtureFilesPath   $BIODIR/gmm/$LANG/ \
+		     --featureFilesPath $TESTDIR/prm/$1/ \
+		     --labelFilesPath  $TESTDIR/lbl/$1/
 #
-$EXECDIR/ComputeTest --config $CFGDIR/target_seg_female.cfg  --ndxFilename $TESTDIR/ndx/$1/test-g.ndx --worldModelFilename world --outputFilename $TESTDIR/res/$1-g.res --mixtureFilesPath   $BIODIR/gmm/  --featureFilesPath $TESTDIR/prm/$1/ --labelFilesPath  $TESTDIR/lbl/$1/
+$EXECDIR/ComputeTest --config $CFGDIR/target_seg_female.cfg  \
+                     --ndxFilename $TESTDIR/ndx/$1/test-g.ndx \
+                     --worldModelFilename world \
+                     --outputFilename $TESTDIR/res/$1-g.res \
+                     --mixtureFilesPath   $BIODIR/gmm/$LANG/  \
+                     --featureFilesPath $TESTDIR/prm/$1/ \
+                     --labelFilesPath  $TESTDIR/lbl/$1/
 
 
 rm $TESTDIR/wav/$1/*
