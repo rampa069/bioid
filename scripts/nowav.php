@@ -1,7 +1,7 @@
 #!/usr/bin/php
 <?php
  
-$salida = array('result'     => 0,
+$salida = array('result'     => 'NOK',
                 'recognized' => 0,
                 'value'      => 0,
                 'gender'     => 0,
