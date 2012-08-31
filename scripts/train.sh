@@ -1,6 +1,12 @@
 #!/bin/bash
 
-export LANG=$2
+if [ "$2" = "" ]
+then
+   LANG="es"
+else
+  LANG=$2
+fi
+  
 
 export BIODIR='/opt/bioid'
 export TMPDIR=$BIODIR/tmp
@@ -25,7 +31,7 @@ mkdir -p $TRAINDIR/lbl/$1
 echo >$TRAINDIR/lst/$1/train.lst
 echo -n "$1_gmm " > $TRAINDIR/ndx/$1/train.ndx
 
-for a in `cat /opt/bioid/train/lst/dir_$1.lst` ;
+for a in `cat $TRAINDIR/lst/dir_$1.lst` ;
 do
         c=`basename $a .wav`
         sox -c 1 $WAVDIR/$1/$a -n trim 0 2 noiseprof $TMPDIR/$c-speech.noise-profile
@@ -33,7 +39,7 @@ do
 
 #        sfbcep -F WAVE -p 19 -e -D -A /opt/bioid/train/wav/$1/$c.wav /opt/bioid/train/prm/$1/$c.prm
 #        slpcep -F WAVE -n 19 -p 19 -e -D -A $WAVDIR/$1/$c.wav  $PRMDIR/$1/$c.prm
-         $EXECDIR/slpcep -F WAVE -n 19 -p 19 -e -D -A $TMPDIR/nr-$c.wav  $PRMDIR/$1/$c.prm
+         $EXECDIR/slpcep -F WAVE -n 19 -p 19 -e -D -A $TMPDIR/nr-$c.wav  $TRAINDIR/prm/$1/$c.prm
 
 #        vadalize -v -c /opt/bioid/PHN_HU_SPDAT_LCRC_N1500 -i /opt/bioid/train/wav/$1/$c.wav -o $LBLDIR/$1/$c.lbl
 
@@ -42,13 +48,13 @@ do
 done
 #
 $EXECDIR/NormFeat --config $CFGDIR/NormFeat_energy.cfg \
-                          --inputFeatureFilename ./lst/$1/train.lst\
+                          --inputFeatureFilename $TRAINDIR/lst/$1/train.lst\
                           --featureFilesPath $TRAINDIR/prm/$1/ \
                           --mixtureFilesPath ./gmm/$LANG/ \
                           --labelFilesPath  $TRAINDIR/lbl/$1/
 #
 $EXECDIR/EnergyDetector --config $CFGDIR/EnergyDetector.cfg \
-                        --inputFeatureFilename ./lst/$1/train.lst\
+                        --inputFeatureFilename $TRAINDIR/lst/$1/train.lst\
                         --featureFilesPath $TRAINDIR/prm/$1/ \
                         --mixtureFilesPath ./gmm/$LANG/ \
                         --labelFilesPath  $TRAINDIR/lbl/$1/

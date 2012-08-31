@@ -1,6 +1,13 @@
 #!/bin/bash
 
-LANG=$2
+
+if [ "$2" = "" ]
+then
+   LANG="es"
+else
+     LANG=$2
+fi
+     
 
 export BIODIR='/opt/bioid'
 export CFGDIR=$BIODIR/cfg

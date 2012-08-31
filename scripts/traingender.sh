@@ -12,6 +12,7 @@ export LBLDIR=$TRAINDIR/lbl
 export PRMDIR=$TRAINDIR/prm
 
 pushd $WAVDIR/$1
+
 ls *digit*.wav > $LSTDIR/dir_$1.lst
 cd /opt/bioid/train/
 
@@ -24,7 +25,7 @@ mkdir -p $TRAINDIR/lbl/$1
 echo >$TRAINDIR/lst/$1/train.lst
 echo -n "$1_gmm " > $TRAINDIR/ndx/$1/train.ndx
 
-for a in `cat /opt/bioid/train/lst/dir_$1.lst` ; 
+for a in `cat $TRAINDIR/lst/dir_$1.lst` ; 
 do  
         c=`basename $a .wav`
   
@@ -38,12 +39,12 @@ do
 done
 #
 $EXECDIR/NormFeat --config $CFGDIR/NormFeat_energy.cfg \
-                  --inputFeatureFilename ./lst/$1/train.lst \
+                  --inputFeatureFilename $TRAINDIR/lst/$1/train.lst \
                   --featureFilesPath $TRAINDIR/prm/$1/ \
                   --labelFilesPath  $TRAINDIR/lbl/$1/
 #
 $EXECDIR/EnergyDetector --config $CFGDIR/EnergyDetector.cfg \
-                        --inputFeatureFilename ./lst/$1/train.lst \
+                        --inputFeatureFilename $TRAINDIR/lst/$1/train.lst \
                         --featureFilesPath $TRAINDIR/prm/$1/  \
                         --labelFilesPath  $TRAINDIR/lbl/$1/
 #

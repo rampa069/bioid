@@ -2,7 +2,16 @@
 #
 #
 
-LANG=en
+if [ "$1" = "" ]
+then
+   LANG="es"
+else
+   LANG=$1
+fi
+
+echo Processing $LANG baseline....        
+
+
 
 BINDIR=/opt/bin
 BIODIR=/opt/bioid
@@ -78,7 +87,7 @@ do
 	$SCRIPTDIR/train.sh $a $LANG
 	                
 done
-                
+#                
 $SCRIPTDIR/traingender.sh male $LANG
 $SCRIPTDIR/traingender.sh female $LANG
         
