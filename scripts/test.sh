@@ -136,5 +136,6 @@ rm $TESTDIR/lbl/$1/*
 
  $SCRDIR/toarray.php $1 > $TESTDIR/res1/$1.res
  $SCRDIR/result.php $1 
+ $SCRDIR/stat.php $1 > /var/www/recordings/test/$1.html
 
 popd > /dev/null
