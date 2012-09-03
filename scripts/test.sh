@@ -25,7 +25,7 @@ export GMMDIR=$BIODIR/gmm/$LANG/
 
 
 
-if [ ! -e $GMMDIR/$USER_gmm.gmm ]
+if [ ! -e $GMMDIR/$USER"_gmm".gmm ]
 then
      $SCRDIR/nobio.php
      rm $TESTDIR/wav/$USER/*
@@ -85,7 +85,7 @@ do
         echo -n "$c " >> $TESTDIR/ndx/$USER/test-g.ndx        
 done
 
-echo  -n "$USER_gmm " >> $TESTDIR/ndx/$USER/test.ndx
+echo  -n "$USER"_gmm" " >> $TESTDIR/ndx/$USER/test.ndx
 
 for user in `ls $BIODIR/gmm/$LANG/[0-9]*`;
 

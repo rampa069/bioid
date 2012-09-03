@@ -31,7 +31,8 @@ mkdir -p $TRAINDIR/lbl/$USER
 
 
 echo >$TRAINDIR/lst/$USER/train.lst
-echo -n "$USER_gmm " > $TRAINDIR/ndx/$USER/train.ndx
+echo -n "$USER" > $TRAINDIR/ndx/$USER/train.ndx
+echo -n "_gmm " >> $TRAINDIR/ndx/$USER/train.ndx
 
 for a in `cat $TRAINDIR/lst/dir_$USER.lst` ;
 do
@@ -76,8 +77,8 @@ $EXECDIR/TrainTarget --config $CFGDIR/TrainTarget.cfg \
 
 
 rm $TRAINDIR/prm/$USER/*
-rm $TRAINDIR/lst/$USER/*
-rm $TRAINDIR/ndx/$USER/*
+#rm $TRAINDIR/lst/$USER/*
+#rm $TRAINDIR/ndx/$USER/*
 rm $TRAINDIR/lbl/$USER/*
 
 
