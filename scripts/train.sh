@@ -6,7 +6,9 @@ then
 else
   LANG=$2
 fi
-  
+
+USER=$1
+USER=${USER/#00/}  
 
 export BIODIR='/opt/bioid'
 export TMPDIR=$BIODIR/tmp
@@ -18,65 +20,65 @@ export LSTDIR=$TRAINDIR/lst
 export LBLDIR=$TRAINDIR/lbl
 export PRMDIR=$TRAINDIR/prm
 
-pushd $WAVDIR/$1
-ls *digit*.wav > $LSTDIR/dir_$1.lst
+pushd $WAVDIR/$USER
+ls *digit*.wav > $LSTDIR/dir_$USER.lst
 cd /opt/bioid/train/
 
-mkdir -p $TRAINDIR/prm/$1
-mkdir -p $TRAINDIR/lst/$1
-mkdir -p $TRAINDIR/ndx/$1
-mkdir -p $TRAINDIR/lbl/$1
+mkdir -p $TRAINDIR/prm/$USER
+mkdir -p $TRAINDIR/lst/$USER
+mkdir -p $TRAINDIR/ndx/$USER
+mkdir -p $TRAINDIR/lbl/$USER
 
 
-echo >$TRAINDIR/lst/$1/train.lst
-echo -n "$1_gmm " > $TRAINDIR/ndx/$1/train.ndx
+echo >$TRAINDIR/lst/$USER/train.lst
+echo -n "$USER_gmm " > $TRAINDIR/ndx/$USER/train.ndx
 
-for a in `cat $TRAINDIR/lst/dir_$1.lst` ;
+for a in `cat $TRAINDIR/lst/dir_$USER.lst` ;
 do
         c=`basename $a .wav`
-        sox -c 1 $WAVDIR/$1/$a -n trim 0 2 noiseprof $TMPDIR/$c-speech.noise-profile
-        sox -c 1 $WAVDIR/$1/$a  $TMPDIR/nr-$c.wav  noisered $TMPDIR/$c-speech.noise-profile  0.5
+        sox -c 1 $WAVDIR/$USER/$a -n trim 0 2 noiseprof $TMPDIR/$c-speech.noise-profile
+        sox -c 1 $WAVDIR/$USER/$a  $TMPDIR/nr-$c.wav  noisered $TMPDIR/$c-speech.noise-profile  0.5
 
-#        sfbcep -F WAVE -p 19 -e -D -A /opt/bioid/train/wav/$1/$c.wav /opt/bioid/train/prm/$1/$c.prm
-#        slpcep -F WAVE -n 19 -p 19 -e -D -A $WAVDIR/$1/$c.wav  $PRMDIR/$1/$c.prm
-         $EXECDIR/slpcep -F WAVE -n 19 -p 19 -e -D -A $TMPDIR/nr-$c.wav  $TRAINDIR/prm/$1/$c.prm
+#        sfbcep -F WAVE -p 19 -e -D -A /opt/bioid/train/wav/$USER/$c.wav /opt/bioid/train/prm/$USER/$c.prm
+#        slpcep -F WAVE -n 19 -p 19 -e -D -A $WAVDIR/$USER/$c.wav  $PRMDIR/$USER/$c.prm
+         $EXECDIR/slpcep -F WAVE -n 19 -p 19 -e -D -A $TMPDIR/nr-$c.wav  $TRAINDIR/prm/$USER/$c.prm
 
-#        vadalize -v -c /opt/bioid/PHN_HU_SPDAT_LCRC_N1500 -i /opt/bioid/train/wav/$1/$c.wav -o $LBLDIR/$1/$c.lbl
+#        vadalize -v -c /opt/bioid/PHN_HU_SPDAT_LCRC_N1500 -i /opt/bioid/train/wav/$USER/$c.wav -o $LBLDIR/$USER/$c.lbl
 
-        echo $c >> $TRAINDIR/lst/$1/train.lst
-        echo -n "$c " >> $TRAINDIR/ndx/$1/train.ndx
+        echo $c >> $TRAINDIR/lst/$USER/train.lst
+        echo -n "$c " >> $TRAINDIR/ndx/$USER/train.ndx
 done
 #
 $EXECDIR/NormFeat --config $CFGDIR/NormFeat_energy.cfg \
-                          --inputFeatureFilename $TRAINDIR/lst/$1/train.lst\
-                          --featureFilesPath $TRAINDIR/prm/$1/ \
+                          --inputFeatureFilename $TRAINDIR/lst/$USER/train.lst\
+                          --featureFilesPath $TRAINDIR/prm/$USER/ \
                           --mixtureFilesPath ./gmm/$LANG/ \
-                          --labelFilesPath  $TRAINDIR/lbl/$1/
+                          --labelFilesPath  $TRAINDIR/lbl/$USER/
 #
 $EXECDIR/EnergyDetector --config $CFGDIR/EnergyDetector.cfg \
-                        --inputFeatureFilename $TRAINDIR/lst/$1/train.lst\
-                        --featureFilesPath $TRAINDIR/prm/$1/ \
+                        --inputFeatureFilename $TRAINDIR/lst/$USER/train.lst\
+                        --featureFilesPath $TRAINDIR/prm/$USER/ \
                         --mixtureFilesPath ./gmm/$LANG/ \
-                        --labelFilesPath  $TRAINDIR/lbl/$1/
+                        --labelFilesPath  $TRAINDIR/lbl/$USER/
 #
 $EXECDIR/NormFeat --config $CFGDIR/NormFeat.cfg \
-		  --inputFeatureFilename $TRAINDIR/lst/$1/train.lst \
-		  --featureFilesPath $TRAINDIR/prm/$1/ \
+		  --inputFeatureFilename $TRAINDIR/lst/$USER/train.lst \
+		  --featureFilesPath $TRAINDIR/prm/$USER/ \
 		  --mixtureFilesPath ./gmm/$LANG/ \
-		  --labelFilesPath  $TRAINDIR/lbl/$1/
+		  --labelFilesPath  $TRAINDIR/lbl/$USER/
 #
 $EXECDIR/TrainTarget --config $CFGDIR/TrainTarget.cfg \
-		     --targetIdList $TRAINDIR/ndx/$1/train.ndx \
+		     --targetIdList $TRAINDIR/ndx/$USER/train.ndx \
 		     --inputWorldFilename world \
-		     --featureFilesPath $TRAINDIR/prm/$1/ \
+		     --featureFilesPath $TRAINDIR/prm/$USER/ \
 		     --mixtureFilesPath	$BIODIR/gmm/$LANG/ \
-		     --labelFilesPath   $TRAINDIR/lbl/$1/
+		     --labelFilesPath   $TRAINDIR/lbl/$USER/
 
 
-rm $TRAINDIR/prm/$1/*
-rm $TRAINDIR/lst/$1/*
-rm $TRAINDIR/ndx/$1/*
-rm $TRAINDIR/lbl/$1/*
+rm $TRAINDIR/prm/$USER/*
+rm $TRAINDIR/lst/$USER/*
+rm $TRAINDIR/ndx/$USER/*
+rm $TRAINDIR/lbl/$USER/*
 
 
 

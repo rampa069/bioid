@@ -121,9 +121,10 @@ $tempvalue=0;
 $stat_user='';
 $background="black";
 
-print("<html><head><title>Test de usuario $arg</title></head><body>");
+print("<html><head><title>Test de usuario $arg</title><link rel=\"stylesheet\" href=\"http://bioid.tenderoo.com/bundles/tenderoocore/css/style.css\" type=\"text/css\"/></head>");
+print("<body><center><br><h1>$arg</h1><br></center>");
 print("<center><table border=\"1\" style=\"background-color:yellow;color:white;border:1px dotted black;width:40%;border-collapse:collapse;\">");
-print("<tr style=\"background-color:orange;\"><th>ACCION</th><th>USUARIO</th><th>RESULTADO</th></th>");
+print("<tr style=\"background-color:orange;\"><th>ACCION</th><th>USUARIO</th><th>RESULTADO</th>");
 foreach ($results as $resultado)
 {
     $stat_user=basename($username[$indice],"_gmm");
@@ -149,7 +150,7 @@ foreach ($results as $resultado)
          $rechazados++;
          $background="red";
         }
-    print ("<tr style=\"background-color:$background;color:yellow\"><td>$reconocido</td><td>$stat_user</td><td>$stat_value</td><tr>\n");
+    print ("<tr style=\"background-color:$background;color:yellow\"><td>$reconocido</td><td>$stat_user</td><td>$stat_value</td></tr>\n");
  }    
  $indice++;
  $tempuser=$stat_user;
@@ -169,7 +170,7 @@ print("<center><hr width=40%></center>");
 print("<center>");
 
 print("<table border=\"1\" style=\"background-color:orange;color:black;border:1px dotted black;width:40%;border-collapse:collapse;\">");
-print ("<tr><th>Usuarios:</th><td>$indice</td><tr>\n");
+print ("<tr><th>Usuarios:</th><td>$indice</td></tr>\n");
 print ("<tr><th>Aceptados:</th><td>$aceptados</td></tr>\n");
 print ("<tr><th>Rechazados:</th><td>$rechazados</td></tr>\n");
 print ("<tr><th>Porcentaje:</th><td>$percent%</td></tr>\n");
@@ -181,20 +182,20 @@ print("<center><hr width=40%></center>");
 print("<center>");
 
 print("<table border=\"1\" style=\"background-color:orange;color:black;border:1px dotted black;width:40%;border-collapse:collapse;\">");
-print ("<tr><th>Resultado:</th><td>$acceso</td><tr>\n");
+print ("<tr><th>Resultado:</th><td>$acceso</td></tr>\n");
 print ("<tr><th>Reconocido:</th><td>$recognized</td></tr>\n");
 print ("<tr><th>Genero:</th><td>$gender</td></tr>\n");
 print ("<tr><th>Valor Maximo:</th><td>$maxvalue</td></tr>\n");
 print ("<tr><th>Valor Minimo:</th><td>$minvalue</td></tr>\n");
 print ("<tr><th>Posible usuario (1-N):</th><td>$posibleId</td></tr>\n");
-print ("<tr><th>Distancia Máxima:</th><td>$confidence</td></tr>\n");
+print ("<tr><th>Distancia Maxima:</th><td>$confidence</td></tr>\n");
 
 
 
 print("</table>");
 
 print("</center>");
-
+print("<center><hr width=40%></center>");
 
 print("</body>"); 
 
@@ -202,17 +203,6 @@ print("</body>");
 
 
 
-$salida = array('result'     => $acceso,
-                'recognized' => $array[0]['recognized'],
-                'value'      => number_format($resultado,2),
-                'gender'     => $gender,
-                'valueCount' => count($results),
-                'possibleId' => basename($username[0],"_gmm")." ".number_format(max_float($results),2),
-                'confidence' => max_float($results)-min_float($results)
-                   );
-
-
-echo json_encode($salida);
 
 ?>
 
