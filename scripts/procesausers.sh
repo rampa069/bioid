@@ -34,7 +34,9 @@ for a in `find $TRAINDIR/wav/$LANG/ -name *-digit*.wav` ;
 do  
         c=`basename $a .wav`
         sox -c 1 $a -n trim 0 2 noiseprof $TMPDIR/$c-speech.noise-profile
-        sox -c 1 $a  $TMPDIR/nr-$c.wav  noisered $TMPDIR/$c-speech.noise-profile  0.5
+        sox -c 1 $a  $TMPDIR/nr-$c.wav  noisered $TMPDIR/$c-speech.noise-profile  0.5 vad
+	
+#	sox -c 1 $a  $TMPDIR/nr-$c.wav vad
           
 #        sfbcep -F WAVE -p 19 -e -D -A $a prm/$c.prm
         $BINDIR/slpcep -F WAVE -n 19 -p 19 -e -D -A $TMPDIR/nr-$c.wav prm/$c.prm
