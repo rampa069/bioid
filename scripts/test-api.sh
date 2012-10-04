@@ -9,7 +9,7 @@ export LSTDIR=$TESTDIR/lst
 export LBLDIR=$TESTDIR/lbl
 export SCRDIR=$BIODIR/scripts/
 export PRMDIR=$TESTDIR/prm
-export GMMDIR=$BIODIR/gmm
+export GMMDIR=$BIODIR/gmm/es/
 
 
 
@@ -34,7 +34,7 @@ for wavfile in `ls *.wav`;
 do
 
  sox -c 1 *.wav -n trim 0 2 noiseprof speech.noise-profile
- sox $wavfile  nr-$wavfile noisered speech.noise-profile  0.6
+ sox $wavfile  nr-$wavfile noisered speech.noise-profile  0.6 vad
  echo nr-*.wav >> $LSTDIR/dir_$1.lst
 
 done
@@ -75,7 +75,7 @@ done
 
 echo -n "$1_gmm ">> $TESTDIR/ndx/$1/test.ndx
 
-for apiuser in `ls /opt/bioid/gmm/api*`;
+for apiuser in `ls /opt/bioid/gmm/es/api*`;
 
 do 
   echo -n "`basename $apiuser .gmm` " >>  $TESTDIR/ndx/$1/test.ndx
@@ -91,9 +91,9 @@ $EXECDIR/EnergyDetector --config $CFGDIR/EnergyDetector.cfg --inputFeatureFilena
 #
 $EXECDIR/NormFeat --config $CFGDIR/NormFeat.cfg --inputFeatureFilename $TESTDIR/lst/$1/test.lst --featureFilesPath $TESTDIR/prm/$1/ --labelFilesPath  $TESTDIR/lbl/$1/ > /dev/null
 #
-$EXECDIR/ComputeTest --config $CFGDIR/ComputeTest.cfg  --ndxFilename $TESTDIR/ndx/$1/test.ndx --worldModelFilename world --outputFilename $TESTDIR/res/$1.res --mixtureFilesPath   $BIODIR/gmm/  --featureFilesPath $TESTDIR/prm/$1/ --labelFilesPath  $TESTDIR/lbl/$1/
+$EXECDIR/ComputeTest --config $CFGDIR/ComputeTest.cfg  --ndxFilename $TESTDIR/ndx/$1/test.ndx --worldModelFilename world --outputFilename $TESTDIR/res/$1.res --mixtureFilesPath   $GMMDIR  --featureFilesPath $TESTDIR/prm/$1/ --labelFilesPath  $TESTDIR/lbl/$1/
 #
-$EXECDIR/ComputeTest --config $CFGDIR/target_seg_female.cfg  --ndxFilename $TESTDIR/ndx/$1/test-g.ndx --worldModelFilename world --outputFilename $TESTDIR/res/$1-g.res --mixtureFilesPath   $BIODIR/gmm/  --featureFilesPath $TESTDIR/prm/$1/ --labelFilesPath  $TESTDIR/lbl/$1/
+$EXECDIR/ComputeTest --config $CFGDIR/target_seg_female.cfg  --ndxFilename $TESTDIR/ndx/$1/test-g.ndx --worldModelFilename world --outputFilename $TESTDIR/res/$1-g.res --mixtureFilesPath   $GMMDIR  --featureFilesPath $TESTDIR/prm/$1/ --labelFilesPath  $TESTDIR/lbl/$1/
 
 
 rm $TESTDIR/wav/$1/*
