@@ -46,7 +46,7 @@ for wavfile in `ls *.wav`;
 do
 
  sox -c 1 *.wav -n trim 0 2 noiseprof speech.noise-profile
- sox -c 1 $wavfile  nr-$wavfile noisered speech.noise-profile  0.6 vad
+ sox -c 1 --norm $wavfile  nr-$wavfile noisered speech.noise-profile  0.6 vad
 
 # sox -c 1 $wavfile  nr-$wavfile vad
  echo nr-*.wav >> $LSTDIR/dir_$USER.lst

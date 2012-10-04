@@ -1,11 +1,11 @@
 prm/*.prm
 lbl/*.lbl
-train/wav/*.wav
+train/wav/*/*/*.wav
 train/lbl/*.lbl
 train/prm/*.prm
-train/lst/*.lst
-train/ndx/*.ndx
-test/wav/*.wav
+train/lst/*
+train/ndx/*/*.ndx
+test/wav/*/*.wav
 test/lbl/*.lbl
 test/prm/*.prm
 test/lst/*.lst
