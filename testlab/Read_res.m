@@ -1,15 +1,16 @@
 function [scores datos] = Read_res(fileToRead)
 
-newData1 = dlmread(fileToRead,' ');
+%newData1 = textread(fileToRead,'%s %s %d %s %f');
 
-%disp(newData1);
+[sexo,usuario,reconocido,fichero,scores] = textread(fileToRead,'%s %s %d %s %f');
 
-if isempty(newData1)
+
+if isempty(scores)
     scores = [];
     datos = [];
 else
-    scores = newData1(:,5);
-    datos = newData1(:,[1:4]);
+    %scores = newData1(:,5);
+    datos = [sexo,usuario,fichero];
 end
 
 end

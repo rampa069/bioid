@@ -1,7 +1,7 @@
 clear
 %% Leemos todos los ficheros de resultados
 path = '/opt/bioid/test/res/';
-res_files = dir([path '*[0-9].res']);
+res_files = dir([path '[0-9]*[0-9].res']);
 
 u = 0;
 s = 0;
@@ -11,17 +11,17 @@ for i = 1 : numel(res_files)
         [scores textdata] = Read_res([path res_files(i).name]);
         % comprobamos si es un usuario nuevo
         if ~isempty(scores)
-            if strcmp(telefono,num2str(textdata(1,2)))
+            if strcmp(telefono,textdata(1,2))
                 s = s + 1;
             else
-                telefono = num2str(textdata(1,2));
-                %disp (telefono);
+                telefono = textdata(1,2);
+                disp (telefono);
                 u = u + 1;
                 s = 1;
             end
             % Eliminamos el primer dato que esta repetido
-            scores(1) =[];
-            textdata(1,:) = [];
+%            scores(1) =[];
+%            textdata(1,:) = [];
             users(u).sample(s).scores = scores;
             users(u).sample(s).textdata = textdata;
         end
@@ -33,7 +33,7 @@ end
 %% Obtenemos scores genuinos
 scores_gen = [];
 scores_falsas = [];
-for u = 1 : numel(users)-1
+for u = 1 : numel(users)
     for s = 1 : numel(users(u).sample)
         scores = users(u).sample(s).scores;
         scores_gen(end+1,1) = u;
