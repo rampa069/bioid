@@ -40,8 +40,8 @@ do
         
         sox $WAVDIR/$USER/$a -n stat -v 2> $TMPDIR/$c.volume
                 
-        sox -c 1 $WAVDIR/$USER/$a -n trim 0 2 noiseprof $TMPDIR/$c-speech.noise-profile
-        sox -c 1 -v `cat $TMPDIR/$c.volume`  $WAVDIR/$USER/$a  $TMPDIR/nr-$c.wav  noisered $TMPDIR/$c-speech.noise-profile  0.5 vad
+        sox -c 1 $WAVDIR/$USER/$a -n trim 0 2 noiseprof $TMPDIR/$c-speech.noise-profile                                              > /dev/null 2> /dev/null
+        sox -c 1 -v `cat $TMPDIR/$c.volume`  $WAVDIR/$USER/$a  $TMPDIR/nr-$c.wav  noisered $TMPDIR/$c-speech.noise-profile  0.5 vad  > /dev/null 2> /dev/null
 
 #        sox -c 1 $WAVDIR/$USER/$a  $TMPDIR/nr-$c.wav vad
         

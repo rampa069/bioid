@@ -8,37 +8,46 @@ s = 0;
 telefono = '';
 for i = 1 : numel(res_files)
     
-        [scores textdata] = Read_res([path res_files(i).name]);
+        [sexo usuario reconocido fichero scoresf] = Read_res([path res_files(i).name]);
         % comprobamos si es un usuario nuevo
-        if ~isempty(scores)
-            if strcmp(telefono,textdata(1,2))
+        if ~isempty(scoresf)
+            if strcmp(telefono,usuario(i))
                 s = s + 1;
             else
-                telefono = textdata(1,2);
-                disp (telefono);
+                telefono =  usuario(i);
+                %disp (telefono);
                 u = u + 1;
                 s = 1;
             end
             % Eliminamos el primer dato que esta repetido
-%            scores(1) =[];
-%            textdata(1,:) = [];
-            users(u).sample(s).scores = scores;
-            users(u).sample(s).textdata = textdata;
+      
+            usuario_genuino=usuario(1);
+            score_genuino=scoresf(1)
+
+            scoresf(1) =[];
+            usuario(1,:) = [];
+
+
+            users(u).sample(s).scores = scoresf;
+            users(u).sample(s).textdata = usuario;
         end
     
 end
 
-
+%disp(usuario_genuino);
 
 %% Obtenemos scores genuinos
 scores_gen = [];
 scores_falsas = [];
-for u = 1 : numel(users)
+for u = 1 : numel(users) 
     for s = 1 : numel(users(u).sample)
         scores = users(u).sample(s).scores;
-        scores_gen(end+1,1) = u;
-        scores_gen(end,2) = s;
-        scores_gen(end,3) = scores(u);
+        usuarios = users(u).sample(s).textdata;
+
+          scores_gen(end+1,1) = u;
+          scores_gen(end,2) = s;
+          scores_gen(end,3) = scores(u);
+
         for ou = 1 : numel(scores)
             if (ou~=u)
                 scores_falsas(end+1,1) = u;
@@ -47,9 +56,12 @@ for u = 1 : numel(users)
                 scores_falsas(end,4) = scores(ou);
             end
         end
+        
     end
 end
 
+disp (scores_gen);
+%disp (scores_falsas);
 %%
 save Eva_5muestras
 
