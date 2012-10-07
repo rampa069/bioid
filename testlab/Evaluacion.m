@@ -5,7 +5,12 @@ res_files = dir([path '[0-9]*[0-9].res']);
 
 u = 0;
 s = 0;
+
 telefono = '';
+scores_gen = [];
+scores_falsas = [];
+
+
 for i = 1 : numel(res_files)
     
         [sexo usuario reconocido fichero scoresf] = Read_res([path res_files(i).name]);
@@ -15,17 +20,27 @@ for i = 1 : numel(res_files)
                 s = s + 1;
             else
                 telefono =  usuario(i);
-                %disp (telefono);
                 u = u + 1;
                 s = 1;
             end
+
+
+
             % Eliminamos el primer dato que esta repetido
       
-            usuario_genuino=usuario(1);
-            score_genuino=scoresf(1)
+            usuario_genuino(i)=usuario(1);
+            score_genuino(i)=scoresf(1);
 
-            scoresf(1) =[];
-            usuario(1,:) = [];
+
+
+
+          scores_gen(end+1,1) = u;
+          scores_gen(end,2) = 1;
+          scores_gen(end,3) = score_genuino(u);
+        
+
+%            scoresf(1) =[];
+%            usuario(1,:) = [];
 
 
             users(u).sample(s).scores = scoresf;
@@ -34,22 +49,17 @@ for i = 1 : numel(res_files)
     
 end
 
-%disp(usuario_genuino);
 
 %% Obtenemos scores genuinos
-scores_gen = [];
-scores_falsas = [];
 for u = 1 : numel(users) 
     for s = 1 : numel(users(u).sample)
         scores = users(u).sample(s).scores;
         usuarios = users(u).sample(s).textdata;
+          
 
-          scores_gen(end+1,1) = u;
-          scores_gen(end,2) = s;
-          scores_gen(end,3) = scores(u);
 
         for ou = 1 : numel(scores)
-            if (ou~=u)
+            if (!strcmp(usuario(u) ,usuario_genuino(u)))
                 scores_falsas(end+1,1) = u;
                 scores_falsas(end,2) = ou;
                 scores_falsas(end,3) = s;
@@ -60,21 +70,21 @@ for u = 1 : numel(users)
     end
 end
 
-disp (scores_gen);
-%disp (scores_falsas);
+disp(scores_gen);
+
 %%
 save Eva_5muestras
 
-%% Parámetros de Evaluación (Gráficas FAR-FRR, ROC, EER, Operating Point)
+%% Parï¿½metros de Evaluaciï¿½n (Grï¿½ficas FAR-FRR, ROC, EER, Operating Point)
 addpath('./EER_Plot/')
 [EER confInterEER OP confInterOP] = EER_DET_conf(scores_gen(:,end),scores_falsas(:,end),1,100,0);
 rmpath('./EER_Plot/')
 disp (EER);
 
-%% Dibujamos gráficas de distribución de similitudes
-% for muestras = 3:8
-%     clearvars -except v1 muestras
-%     load(['Eva_' num2str(muestras) 'muestras.mat'])
-%     subplot(3,2,muestras-2)
-%     plot_dist(scores_gen(:,end),scores_falsas(:,end),100);
-% end
+%% Dibujamos grï¿½ficas de distribuciï¿½n de similitudes
+ %for muestras = 3:8
+ %  clearvars -except v1 muestras
+ %   load(['Eva_' num2str(muestras) 'muestras.mat'])
+ %  subplot(3,2,muestras-2)
+ %plot_dist(scores_gen(:,end),scores_falsas(:,end),100);
+ %end
