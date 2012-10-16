@@ -1,7 +1,7 @@
 clear
 %% Leemos todos los ficheros de resultados
 path = '/opt/bioid/test/res/';
-res_files = dir([path '[0-9]*[0-9].res']);
+res_files = dir([path '*[0-9].res']);
 
 u = 0;
 s = 0;

@@ -2,7 +2,7 @@
 clear
 
 %% configuración
-num_ranks = 15;
+num_ranks = 10;
 
 %% Cargamos datos de scores (calculados en verificación)
 load Eva_5muestras scores_gen scores_falsas users
@@ -20,7 +20,7 @@ for u = 1 : numel(users)
              rank_ok(r) = rank_ok(r) + 1;
           else
               if (r==1)
-                errores(u,scores_sort(1,1)) = errores(u,scores_sort(1,1)) + 1;
+                %errores(u,scores_sort(1,1)) = errores(u,scores_sort(1,1))+1 ;
               end
           end
        end
@@ -30,8 +30,10 @@ end
 %% Dibujamos
 ratios = 100*rank_ok./num_attempts;
 figure;
-plot_ident(ratios);
+plot(ratios);
+print('png/IDENT.png','-dpng')
+
 %% Dibujamos matriz de confusión
-%figure;
-%imagesc(errores)
-%colorbar('EastOutside')
+figure;
+imagesc(errores)
+colorbar('EastOutside')
